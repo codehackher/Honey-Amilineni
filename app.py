@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
-from qiskit import QuantumCircuit, Aer, execute
+from qiskit import QuantumCircuit
+from qiskit_aer import AerSimulator # <-- Corrected import
 from qiskit.visualization import plot_bloch_multivector
 import matplotlib.pyplot as plt
 
@@ -83,8 +84,9 @@ if st.button('Execute Circuit'):
                     getattr(qc, gate_type.lower())(qubit)
 
             # Run the simulation
-            backend = Aer.get_backend('statevector_simulator')
-            job = execute(qc, backend)
+            # The new way to get the Aer Simulator
+            backend = AerSimulator()
+            job = backend.run(qc)
             result = job.result()
             statevector = result.get_statevector()
             
